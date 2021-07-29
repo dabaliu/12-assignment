@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise assignment</title>
+    <style>
+        #loader {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            display: none;
+        }
+
+        #loader:after {
+            content: " ";
+            display: block;
+            width: 18px;
+            height: 18px;
+            margin: 2px;
+            border-radius: 50%;
+            border: 2px solid #241f1f;
+            border-color: #241f1f transparent #241f1f transparent;
+            animation: lds-dual-ring 1.2s linear infinite;
+        }
+
+        @keyframes lds-dual-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #container {
+            display: block;
+            width: 100%;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="get-text-btn">Get Students</button>
+    <div id="loader"></div>
+    <div id="container"></div>
+
+    <script>
+        let button = document.getElementById("get-text-btn")
+        let container = document.getElementById("container")
+        let loader = document.getElementById("loader")
+
+        class Student {
+            constructor(name, address, phone, course) {
+                this.name = name;
+                this.address = address;
+                this.phone = phone;
+                this.course = course;
+            }
+
+            get info() {
+                return "Name: " + this.name + "\n" +
+                    "Address: " + this.address + "\n" +
+                    "Phone: " + this.phone + "\n" +
+                    "Course: " + this.course + "\n"
+            }
+        }
+
+        button.addEventListener("click", () => {
+            loader.style.display = "inline-block"
+
+            fetch('https://v-dresevic.github.io/Advanced-JavaScript-Programming/data/students.txt').then((response) => {
+                if (response.status !== 200) {
+                    throw new Error("Error while reading file.")
+                }
+
+                return response.text()
+            }).then((text) => {
+                let s = text.split('\n')
+                let student1 = new Student(s[0], s[1], s[2], s[3])
+                let student2 = new Student(s[4], s[5], s[6], s[7])
+                let student3 = new Student(s[8], s[9], s[10], s[11])
+                let student4 = new Student(s[12], s[13], s[14], s[15])
+                let student5 = new Student(s[16], s[17], s[18], s[19])
+                container.innerText = student1.info + '\n' + student2.info + '\n' + student3.info + '\n' + student4.info + '\n' + student5.info
+            }).catch((err) => {
+                container.innerHTML = "Fetch problem: " + err.message
+            }).finally(() => {
+                loader.style.display = "none"
+            })
+
+        })
+    </script>
+</body>
+
+</html>
