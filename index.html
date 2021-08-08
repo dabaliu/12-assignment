@@ -63,10 +63,10 @@
             }
 
             get info() {
-                return "Name: " + this.name + "\n" +
-                    "Address: " + this.address + "\n" +
-                    "Phone: " + this.phone + "\n" +
-                    "Course: " + this.course + "\n"
+                return "Name: " + this.name + "<br>" +
+                    "Address: " + this.address + "<br>" +
+                    "Phone: " + this.phone + "<br>" +
+                    "Course: " + this.course + "<br>" + "<br>"
             }
         }
 
@@ -80,13 +80,14 @@
 
                 return response.text()
             }).then((text) => {
-                let s = text.split('\n')
-                let student1 = new Student(s[0], s[1], s[2], s[3])
-                let student2 = new Student(s[4], s[5], s[6], s[7])
-                let student3 = new Student(s[8], s[9], s[10], s[11])
-                let student4 = new Student(s[12], s[13], s[14], s[15])
-                let student5 = new Student(s[16], s[17], s[18], s[19])
-                container.innerText = student1.info + '\n' + student2.info + '\n' + student3.info + '\n' + student4.info + '\n' + student5.info
+                let res = text.split('\n')
+
+                for (let i = 0; i < res.length; i++) {
+                    let student = new Student(res[i], res[i+1], res[i+2], res[i+3])
+                    document.write(student.info)
+                    console.log(res.length)
+                    i = i + 3
+                }
             }).catch((err) => {
                 container.innerHTML = "Fetch problem: " + err.message
             }).finally(() => {
